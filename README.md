@@ -61,11 +61,6 @@ Praktik penerapan pipeline **Penerapan Kecerdasan Artifisial** dengan **Hugging 
 - **Target**: 
     - isFraud : Mengidentifikasi transaksi yang dilakukan oleh pelaku penipu atau nasabah asli
 
-cols_to_remove = [
-    'newbalanceOrig',
-    'newbalanceDest',
-    'countDest'
-] cols_to_drop = ['isFlaggedFraud']
 ---
 
 ## 👥 Tim & Kontribusi
