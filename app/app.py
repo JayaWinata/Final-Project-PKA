@@ -4,7 +4,7 @@ import joblib
 
 # unknown_types = sio.get_untrusted_types(file="Model/credit_loan_detection.skops")
 pipe = joblib.load("fraud_detection_model.joblib")
-def predict_credit_risk(step, amount, oldbalanceOrig, oldbalanceDest, isMerchantDest, countOrig, type):
+def predict_credit_risk(  amount, oldbalanceOrig, oldbalanceDest, isMerchantDest, countOrig, type):
 
     amount = amount // 1000
     oldbalanceOrig = oldbalanceOrig // 1_000
@@ -27,7 +27,7 @@ def predict_credit_risk(step, amount, oldbalanceOrig, oldbalanceDest, isMerchant
         case _: # Transfer
             type = 2
 
-    features = [step, amount, oldbalanceOrig, oldbalanceDest, isMerchantDest, countOrig, type]
+    features = [  amount, oldbalanceOrig, oldbalanceDest, isMerchantDest, countOrig, type]
     
     features = [features]
     prediction = pipe.predict(features)[0]
@@ -37,7 +37,6 @@ def predict_credit_risk(step, amount, oldbalanceOrig, oldbalanceDest, isMerchant
     try:
         df1 = pd.read_csv('dataset.csv')
         df2 = pd.DataFrame({
-            "step":[step],
             "amount":[amount],
             "oldbalanceOrig":[oldbalanceOrig],
             "oldbalanceDest":[oldbalanceDest],
@@ -49,7 +48,6 @@ def predict_credit_risk(step, amount, oldbalanceOrig, oldbalanceDest, isMerchant
         pd.concat([df1, df2], axis=0).to_csv("dataset.csv", index=False)
     except:
         pd.DataFrame({
-            "step":[step],
             "amount":[amount],
             "oldbalanceOrig":[oldbalanceOrig],
             "oldbalanceDest":[oldbalanceDest],
@@ -62,7 +60,6 @@ def predict_credit_risk(step, amount, oldbalanceOrig, oldbalanceDest, isMerchant
     return label
 
 inputs = [
-    gr.Number(minimum=1, label="step"), #step
     gr.Number(minimum=1_000, label="Jumlah Transfer (Rp)"), #amount
     gr.Number(minimum=1_000, label="Isi saldo pengirim (Rp)"), #oldbalanceOrig
     gr.Number(minimum=1_000, label="Isi saldo penerima (Rp)"), #oldbalanceDest
@@ -75,10 +72,10 @@ inputs = [
 outputs = [gr.Label(num_top_classes=1, label="Hasil Prediksi")]
 
 examples = [
-    [9.00, 2482740_000.91, 21309_000.00, 645110_000.66,'Customer',1.00, 'Pembayaran'],
-    [5.00, 281593_000.55, 2085292_000.46, 2772312_000.14, 'Merchant', 1.00, 'Debit'],
-    [7.00, 262434_000.54, 262434_000.54, 19525_000.79, 'Customer', 1.00, 'Transfer'],
-    [8.0, 222_000.0, 222_000.0, 1_000, "Customer", 1.0, "Tarik"]
+    [2482740_000.91, 21309_000.00, 645110_000.66,'Customer',1.00, 'Pembayaran'],
+    [281593_000.55, 2085292_000.46, 2772312_000.14, 'Merchant', 1.00, 'Debit'],
+    [262434_000.54, 262434_000.54, 19525_000.79, 'Customer', 1.00, 'Transfer'],
+    [222_000.0, 222_000.0, 1_000, "Customer", 1.0, "Tarik"]
 ]
 
 title = "Financial Fraud Detection"
