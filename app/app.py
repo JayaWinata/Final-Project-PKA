@@ -2,14 +2,13 @@ import gradio as gr
 import pandas as pd
 import joblib
 
-# unknown_types = sio.get_untrusted_types(file="Model/credit_loan_detection.skops")
-pipe = joblib.load("fraud_detection_model.joblib")
+pipe = joblib.load("fraud_detection_model_balanced.joblib")
 def predict_credit_risk(  amount, oldbalanceOrig, oldbalanceDest, isMerchantDest, countOrig, type):
 
     amount = amount // 1000
     oldbalanceOrig = oldbalanceOrig // 1_000
     oldbalanceDest = oldbalanceDest // 1_000
-    match(isMerchantDest): # Kredit/KPR : 0, Lainnya : 1, Pribadi: 2, Menyewa : 3
+    match(isMerchantDest):
         case "Customer":
             isMerchantDest = 0
         case _: # Merchant
